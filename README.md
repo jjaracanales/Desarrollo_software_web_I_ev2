@@ -1,211 +1,84 @@
-# Sistema de Gestión de Proyectos con Autenticación JWT
+# EV2 – Sistema de Gestión de Proyectos (Laravel 12)
 
-## 📋 Descripción
+Aplicación web para la Evaluación 2 de “Desarrollo de Software Web I”. Construida con Laravel 12 (PHP 8.2.29) y MySQL. Continúa EV1 e incorpora autenticación JWT y CRUD protegido de Proyectos.
 
-Sistema completo de gestión de proyectos desarrollado en Laravel 12 con autenticación JWT, integración de valor UF en tiempo real y gestión completa de usuarios y proyectos.
+---
 
-## ✨ Características Principales
+## Requisitos
+- PHP 8.2.29
+- Composer
+- MySQL en 127.0.0.1:3306
 
-### 🔐 Sistema de Autenticación
-- **Registro de usuarios** con validación y hash de contraseñas
-- **Inicio de sesión** con generación de JWT tokens
-- **Middleware de autenticación** para proteger rutas
-- **Gestión de sesiones** con tokens JWT
+## Instalación rápida
+1) Clonar repo y entrar a la carpeta
+2) Instalar dependencias: `composer install`
+3) Crear `.env` (o copiar desde `.env.example` si existe) y ajustar credenciales MySQL
+4) Migraciones: `php artisan migrate`
+5) Levantar: `php artisan serve` y abrir http://127.0.0.1:8000
 
-### 📊 Gestión de Proyectos
-- **CRUD completo** de proyectos
-- **Asociación con usuarios** (campo `created_by`)
-- **Estados de proyecto**: Pendiente, En Progreso, Completado, Cancelado
-- **Validación de datos** en formularios
+Autenticación: regístrate en `/registro` y luego inicia sesión en `/login`. El CRUD de Proyectos requiere estar logueado.
 
-### 💰 Integración UF
-- **Valor UF en tiempo real** desde API Mindicador
-- **API de respaldo** (Santa.cl)
-- **Actualización automática** del valor
-- **Sin valores hardcodeados** - solo datos reales
-
-### 🎨 Interfaz de Usuario
-- **Diseño moderno** con Ant Design
-- **Vistas responsivas** para autenticación y proyectos
-- **Estilos CSS personalizados** con gradientes y animaciones
-- **Iconos FontAwesome** para mejor UX
-
-## 🚀 Tecnologías Utilizadas
-
-- **Backend**: Laravel 12 (PHP 8.2+)
-- **Base de Datos**: MySQL
-- **Autenticación**: JWT (Firebase PHP-JWT)
-- **Frontend**: HTML5, CSS3, JavaScript ES6+
-- **Estilos**: Ant Design, CSS personalizado
-- **Iconos**: FontAwesome 6.0
-
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 EV2/
 ├── app/
 │   ├── Http/
 │   │   ├── Controllers/
-│   │   │   ├── AuthController.php      # Controlador de autenticación
-│   │   │   └── ProyectoController.php  # Controlador de proyectos
+│   │   │   ├── AuthController.php        # Registro/Login + JWT
+│   │   │   ├── HomeController.php        # Home público
+│   │   │   └── ProyectoController.php    # CRUD de Proyectos
 │   │   └── Middleware/
-│   │       └── JWTAuthMiddleware.php   # Middleware JWT
+│   │       └── JWTAuthMiddleware.php     # Protege rutas con JWT (cookie o Bearer)
 │   ├── Models/
-│   │   ├── User.php                    # Modelo de usuario
-│   │   └── Proyecto.php                # Modelo de proyecto
+│   │   ├── Proyecto.php                  # Modelo proyecto
+│   │   └── User.php                      # Modelo usuario (hash de clave)
 │   └── Services/
-│       └── UFService.php               # Servicio de valor UF
+│       └── UFService.php                 # Servicio para mostrar UF
+├── bootstrap/
+│   └── app.php                           # Bootstrap Laravel + alias middleware
+├── config/                               # Configuración (app, database, etc.)
 ├── database/
-│   ├── migrations/                     # Migraciones de BD
-│   └── (sin seeders en uso para EV2)
+│   ├── migrations/                       # Tablas users, cache, jobs, proyectos
+│   │   ├── 0001_01_01_000000_create_users_table.php
+│   │   ├── 0001_01_01_000001_create_cache_table.php
+│   │   ├── 0001_01_01_000002_create_jobs_table.php
+│   │   └── 2025_07_22_150610_create_proyectos_table.php
+│   └── seeders/                          # (presentes, no usados en EV2)
+├── public/
+│   ├── index.php                         # Front controller
+│   └── logo.png                          # Logo
 ├── resources/
-│   └── views/
-│       ├── auth/                       # Vistas de autenticación
-│       ├── proyectos/                  # Vistas de proyectos
-│       └── components/                 # Componentes reutilizables
-└── routes/
-    ├── api.php                         # Rutas de la API
-    └── web.php                         # Rutas web
+│   ├── views/
+│   │   ├── layouts/
+│   │   │   └── app.blade.php             # Layout principal
+│   │   ├── auth/
+│   │   │   ├── login.blade.php           # Iniciar sesión
+│   │   │   └── registro.blade.php        # Registro
+│   │   ├── proyectos/
+│   │   │   ├── index.blade.php           # Listado
+│   │   │   ├── create.blade.php          # Crear
+│   │   │   ├── edit.blade.php            # Editar
+│   │   │   └── show.blade.php            # Detalle
+│   │   ├── components/
+│   │   │   └── uf-display.blade.php      # Widget UF
+│   │   └── home.blade.php                # Portada
+│   └── js/bootstrap.js                   # JS base
+├── routes/
+│   ├── api.php                           # Registro/Login API y CRUD API protegido
+│   └── web.php                           # Rutas web (públicas y protegidas)
+├── .env                                  # Configuración local (APP_KEY, DB, JWT)
+├── composer.json                         # Dependencias
+└── README.md
 ```
 
-## 🗄️ Base de Datos
+## Uso rápido
+- Ir a `/registro` para crear usuario y luego a `/login`.
+- Sección Proyectos en `/proyectos`: crear, ver, editar y eliminar (requiere sesión).
 
-### Configuración
-- **Host**: 127.0.0.1
-- **Puerto**: 3306
-- **Base de datos**: `desarrollo_software_1`
-- **Usuario**: `root`
-- **Contraseña**: `desarrollo_software_1`
+## Notas
+- No se usan seeders en EV2.
+- El token JWT se guarda en cookie `jwt_token` (SameSite=Lax) y también se acepta Bearer.
 
-### Tablas Principales
-
-#### Users
-- `id` - Identificador único
-- `nombre` - Nombre completo del usuario
-- `correo` - Correo electrónico (único)
-- `clave` - Contraseña hasheada
-- `created_at`, `updated_at` - Timestamps
-
-#### Proyectos
-- `id` - Identificador único
-- `nombre` - Nombre del proyecto
-- `fecha_inicio` - Fecha de inicio
-- `estado` - Estado del proyecto
-- `responsable` - Persona responsable
-- `monto` - Monto del proyecto
-- `created_by` - ID del usuario que creó el proyecto
-- `created_at`, `updated_at` - Timestamps
-
-## 🔌 API Endpoints
-
-### Rutas Públicas
-- `POST /api/registro` - Registro de usuario
-- `POST /api/login` - Inicio de sesión
-
-### Rutas Protegidas (requieren JWT)
-- `GET /api/proyectos` - Listar proyectos
-- `POST /api/proyectos` - Crear proyecto
-- `GET /api/proyectos/{id}` - Ver proyecto específico
-- `PUT /api/proyectos/{id}` - Actualizar proyecto
-- `DELETE /api/proyectos/{id}` - Eliminar proyecto
-- `GET /api/usuario` - Información del usuario autenticado
-
-## 🛠️ Instalación y Configuración
-
-### 1. Clonar el repositorio
-```bash
-git clone https://github.com/jjaracanales/Desarrollo_software_web_I_ev2.git
-cd Desarrollo_software_web_I_ev2
-```
-
-### 2. Instalar dependencias
-```bash
-composer install
-```
-
-### 3. Configurar base de datos
-- Crear base de datos MySQL: `desarrollo_software_1`
-- Configurar credenciales en archivo `.env`
-
-### 4. Ejecutar migraciones
-```bash
-php artisan migrate
-```
-
-### 5. Iniciar servidor
-```bash
-php artisan serve
-```
-
-## 👥 Usuarios
-
-En EV2 no se incluyen usuarios precargados. Regístrate en `/registro` y luego inicia sesión en `/login`.
-
-## 🔒 Seguridad
-
-- **Contraseñas hasheadas** con Laravel Hash
-- **JWT tokens** con expiración de 24 horas
-- **Validación de datos** en todos los formularios
-- **Middleware de autenticación** para rutas protegidas
-- **Sanitización de inputs** automática
-
-## 📱 Uso del Sistema
-
-### 1. Acceso Inicial
-- Navegar a `/login` o `/registro`
-- Crear cuenta nueva o iniciar sesión
-
-### 2. Gestión de Proyectos
-- Ver lista de proyectos en `/proyectos`
-- Crear nuevo proyecto con botón "Nuevo Proyecto"
-- Editar/eliminar proyectos existentes
-
-### 3. Valor UF
-- Se muestra automáticamente en la página principal
-- Se actualiza desde API externa
-- Botón de actualización manual disponible
-
-## 🧪 Testing
-
-### Ejecutar Tests
-```bash
-php artisan test
-```
-
-### Verificar Funcionalidades
-- Autenticación de usuarios
-- CRUD de proyectos
-- Validación de formularios
-- Middleware de autenticación
-- Servicio de valor UF
-
-## 📊 Estadísticas del Proyecto
-
-- **Total de archivos**: 70+
-- **Líneas de código**: 12,000+
-- **Controladores**: 2
-- **Modelos**: 2
-- **Vistas**: 6
-- **Middleware**: 1
-- **Servicios**: 1
-
-## 👨‍💻 Autor
-
-**José Jara Canales**
-- Estudiante de Desarrollo de Software Web I
-- Evaluación EV2 - Sistema de Gestión de Proyectos
-
-## 📝 Licencia
-
-Este proyecto es parte de una evaluación académica y está desarrollado con fines educativos.
-
-## 🔄 Actualizaciones
-
-- **v1.0**: Sistema base con gestión de proyectos
-- **v2.0**: Integración de autenticación JWT
-- **v3.0**: Servicio de valor UF en tiempo real
-- **v4.0**: Middleware de autenticación y rutas protegidas
-
----
-
-**¡Sistema completamente funcional y listo para usar!** 🎯
+## Autor
+José Jara Canales – EV2, Desarrollo de Software Web I

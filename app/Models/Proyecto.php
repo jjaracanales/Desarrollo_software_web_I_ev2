@@ -11,11 +11,22 @@ class Proyecto extends Model
         'fecha_inicio',
         'estado',
         'responsable',
-        'monto'
+        'monto',
+        'created_by'
     ];
 
     protected $casts = [
         'fecha_inicio' => 'date',
-        'monto' => 'decimal:2'
+        'monto' => 'decimal:2',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
+
+    /**
+     * Relación con el usuario que creó el proyecto
+     */
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

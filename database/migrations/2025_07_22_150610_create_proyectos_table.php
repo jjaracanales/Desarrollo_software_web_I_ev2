@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('estado');
             $table->string('responsable');
             $table->decimal('monto', 15, 2);
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

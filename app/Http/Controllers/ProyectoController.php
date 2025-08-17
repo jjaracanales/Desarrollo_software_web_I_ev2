@@ -37,7 +37,10 @@ class ProyectoController extends Controller
             'monto' => 'required|numeric|min:0'
         ]);
 
-        Proyecto::create($request->all());
+        $data = $request->all();
+        $data['created_by'] = $request->user_id;
+
+        Proyecto::create($data);
         return redirect()->route('proyectos.index')->with('success', 'Proyecto creado exitosamente');
     }
 

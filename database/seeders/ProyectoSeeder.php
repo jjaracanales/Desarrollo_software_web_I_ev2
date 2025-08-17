@@ -15,39 +15,44 @@ class ProyectoSeeder extends Seeder
     {
         $proyectos = [
             [
-                'nombre' => 'istema Web E-commerce',
-                'fecha_inicio' => '2024-01-15',
+                'nombre' => 'Sistema Web E-commerce',
+                'fecha_inicio' => '2025-01-15',
                 'estado' => 'En Progreso',
-                'responsable' => 'María González',
-                'monto' => 25000000
+                'responsable' => 'José Jara Canales',
+                'monto' => 2500000,
+                'created_by' => 1
             ],
             [
                 'nombre' => 'Migración de Base de Datos Legacy',
-                'fecha_inicio' => '2024-02-01',
+                'fecha_inicio' => '2025-02-01',
                 'estado' => 'Completado',
-                'responsable' => 'Carlos Rodríguez',
-                'monto' => 15000000
+                'responsable' => 'Equipo de Desarrollo',
+                'monto' => 1800000,
+                'created_by' => 1
             ],
             [
                 'nombre' => 'Implementación de API REST',
-                'fecha_inicio' => '2024-03-10',
+                'fecha_inicio' => '2025-03-10',
                 'estado' => 'Pendiente',
-                'responsable' => 'Ana Martínez',
-                'monto' => 8000000
+                'responsable' => 'José Jara Canales',
+                'monto' => 3200000,
+                'created_by' => 2
             ],
             [
                 'nombre' => 'Desarrollo de Aplicación Móvil',
-                'fecha_inicio' => '2024-01-20',
+                'fecha_inicio' => '2025-04-05',
                 'estado' => 'En Progreso',
-                'responsable' => 'Luis Pérez',
-                'monto' => 35000000
+                'responsable' => 'Equipo Móvil',
+                'monto' => 4500000,
+                'created_by' => 2
             ],
             [
                 'nombre' => 'Auditoría de Seguridad IT',
-                'fecha_inicio' => '2024-02-15',
+                'fecha_inicio' => '2025-05-20',
                 'estado' => 'Cancelado',
-                'responsable' => 'Patricia Silva',
-                'monto' => 12000000
+                'responsable' => 'Departamento de Seguridad',
+                'monto' => 1200000,
+                'created_by' => 3
             ]
         ];
 

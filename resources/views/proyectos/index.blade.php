@@ -62,6 +62,12 @@
                             <i class="fas fa-list" style="margin-right: 8px;"></i>
                             Lista de Proyectos
                         </span>
+                        @if($hasJwt)
+                            <a href="{{ route('proyectos.create') }}" class="ant-btn ant-btn-primary" style="display:inline-flex; align-items:center; gap:8px;">
+                                <i class="fas fa-plus"></i>
+                                Crear Proyecto
+                            </a>
+                        @endif
 
                     </div>
                 </div>

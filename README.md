@@ -57,7 +57,7 @@ EV2/
 │       └── UFService.php               # Servicio de valor UF
 ├── database/
 │   ├── migrations/                     # Migraciones de BD
-│   └── seeders/                        # Seeders con datos de ejemplo
+│   └── (sin seeders en uso para EV2)
 ├── resources/
 │   └── views/
 │       ├── auth/                       # Vistas de autenticación
@@ -72,7 +72,7 @@ EV2/
 
 ### Configuración
 - **Host**: 127.0.0.1
-- **Puerto**: 3307
+- **Puerto**: 3306
 - **Base de datos**: `desarrollo_software_1`
 - **Usuario**: `root`
 - **Contraseña**: `desarrollo_software_1`
@@ -132,31 +132,14 @@ composer install
 php artisan migrate
 ```
 
-### 5. (Opcional) Poblar base de datos
-Esta evaluación no exige seeders. Si quieres datos de ejemplo, puedes ejecutar:
-```bash
-php artisan db:seed
-```
-
-### 6. Iniciar servidor
+### 5. Iniciar servidor
 ```bash
 php artisan serve
 ```
 
-## 👥 Usuarios de Ejemplo
+## 👥 Usuarios
 
-### Credenciales de Acceso
-1. **Administrador**
-   - Email: `admin@sistema.com`
-   - Contraseña: `admin123`
-
-2. **Usuario Demo**
-   - Email: `jose@ejemplo.com`
-   - Contraseña: `password123`
-
-3. **Usuario Adicional**
-   - Email: `demo@ejemplo.com`
-   - Contraseña: `demo123`
+En EV2 no se incluyen usuarios precargados. Regístrate en `/registro` y luego inicia sesión en `/login`.
 
 ## 🔒 Seguridad
 

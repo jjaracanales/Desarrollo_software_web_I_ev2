@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Proyecto;
+use Illuminate\Support\Facades\Log;
 
 class ProyectoController extends Controller
 {
@@ -29,6 +30,13 @@ class ProyectoController extends Controller
      */
     public function store(Request $request)
     {
+        // Diagnóstico: confirmar que la petición llega al controlador
+        Log::info('POST /proyectos (store) recibido', [
+            'path' => $request->path(),
+            'method' => $request->method(),
+            'user_id' => $request->user_id ?? null,
+        ]);
+
         $request->validate([
             'nombre' => 'required|string|max:255',
             'fecha_inicio' => 'required|date',
@@ -37,11 +45,24 @@ class ProyectoController extends Controller
             'monto' => 'required|numeric|min:0'
         ]);
 
-        $data = $request->all();
+        // Validar que venga un usuario autenticado por JWT
+        if (!$request->user_id) {
+            Log::warning('POST /proyectos sin user_id en request (JWT ausente)');
+            return redirect()->route('auth.login')->with('error', 'Tu sesión no es válida o expiró. Inicia sesión nuevamente.');
+        }
+
+        // Preparar datos y forzar created_by desde JWT
+        $data = $request->only(['nombre', 'fecha_inicio', 'estado', 'responsable', 'monto']);
         $data['created_by'] = $request->user_id;
 
-        Proyecto::create($data);
-        return redirect()->route('proyectos.index')->with('success', 'Proyecto creado exitosamente');
+        try {
+            $proyecto = Proyecto::create($data);
+            Log::info('Proyecto creado OK', ['id' => $proyecto->id]);
+            return redirect()->route('proyectos.index')->with('success', 'Proyecto creado exitosamente');
+        } catch (\Throwable $e) {
+            Log::error('Error al crear proyecto', ['exception' => $e->getMessage()]);
+            return back()->withInput()->with('error', 'No se pudo crear el proyecto: '.$e->getMessage());
+        }
     }
 
     /**

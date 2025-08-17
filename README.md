@@ -72,7 +72,7 @@ EV2/
 
 ### Configuración
 - **Host**: 127.0.0.1
-- **Puerto**: 3306
+- **Puerto**: 3307
 - **Base de datos**: `desarrollo_software_1`
 - **Usuario**: `root`
 - **Contraseña**: `desarrollo_software_1`
@@ -132,7 +132,8 @@ composer install
 php artisan migrate
 ```
 
-### 5. Poblar base de datos
+### 5. (Opcional) Poblar base de datos
+Esta evaluación no exige seeders. Si quieres datos de ejemplo, puedes ejecutar:
 ```bash
 php artisan db:seed
 ```

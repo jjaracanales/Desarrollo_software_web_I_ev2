@@ -1,205 +1,111 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio de Sesión - Sistema de Proyectos</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+@extends('layouts.app')
+@section('title', 'Iniciar Sesión')
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .login-container {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .logo {
-            font-size: 2.5em;
-            color: #667eea;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 1.8em;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 600;
-        }
-
-        input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e1e5e9;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: border-color 0.3s ease;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .links {
-            margin-top: 20px;
-        }
-
-        .links a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .links a:hover {
-            text-decoration: underline;
-        }
-
-        .error {
-            background: #fee;
-            color: #c33;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #fcc;
-        }
-
-        .success {
-            background: #efe;
-            color: #363;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #cfc;
-        }
-    </style>
-</head>
-<body>
-    <div class="login-container">
-        <div class="logo">
-            <i class="fas fa-project-diagram"></i>
-        </div>
-        
-        <h1>Iniciar Sesión</h1>
-
-        @if(session('error'))
-            <div class="error">
-                {{ session('error') }}
+@section('content')
+<section style="position:relative; overflow:hidden; border-radius:16px; background: linear-gradient(135deg, #001529 0%, #1890ff 60%, #722ed1 100%); color:white;">
+    <div style="position:absolute; inset:0; opacity:.15; background-image: radial-gradient(white 1px, transparent 1px); background-size: 16px 16px;"></div>
+    <div style="position:relative; padding:48px 28px; display:flex; justify-content:center;">
+        <div class="ant-card" style="width: 100%; max-width: 500px; box-shadow: 0 16px 40px rgba(0,0,0,0.3); border-radius: 12px; overflow:hidden;">
+            <div class="ant-card-head">
+                <div class="ant-card-head-title" style="display:flex; align-items:center; gap:10px;">
+                    <i class="fas fa-sign-in-alt" style="color:#1890ff;"></i>
+                    <span style="font-weight:600;">Iniciar Sesión</span>
+                </div>
             </div>
-        @endif
+            <div class="ant-card-body">
+                <div style="display:flex; justify-content:center; margin-bottom: 12px;">
+                    <img src="{{ asset('logo.png') }}" alt="Logo" style="height:42px; width:auto;"/>
+                </div>
+            @if(session('error'))
+                <div class="ant-alert ant-alert-error" role="alert" style="margin-bottom: 16px;">
+                    <span class="ant-alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                    <div class="ant-alert-content">
+                        <div class="ant-alert-message">{{ session('error') }}</div>
+                    </div>
+                </div>
+            @endif
 
-        @if(session('success'))
-            <div class="success">
-                {{ session('success') }}
+            @if(session('success'))
+                <div class="ant-alert ant-alert-success" role="alert" style="margin-bottom: 16px;">
+                    <span class="ant-alert-icon"><i class="fas fa-check-circle"></i></span>
+                    <div class="ant-alert-content">
+                        <div class="ant-alert-message">{{ session('success') }}</div>
+                    </div>
+                </div>
+            @endif
+
+            <form id="loginForm">
+                <div class="ant-form-item" style="margin-bottom: 12px;">
+                    <div class="ant-form-item-label"><label for="correo">Correo Electrónico</label></div>
+                    <div class="ant-form-item-control">
+                        <span class="ant-input-affix-wrapper" style="width:100%; border:1px solid #d9d9d9; border-radius:6px; padding:0 11px; height:40px; display:flex; align-items:center; background:#fff;">
+                            <span class="ant-input-prefix"><i class="fas fa-envelope" style="color:#8c8c8c;"></i></span>
+                            <input class="ant-input" type="email" id="correo" name="correo" required placeholder="tu@email.com" style="border:none; box-shadow:none; height:38px; flex:1;"/>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="ant-form-item" style="margin-bottom: 16px;">
+                    <div class="ant-form-item-label"><label for="clave">Contraseña</label></div>
+                    <div class="ant-form-item-control">
+                        <span class="ant-input-affix-wrapper" style="width:100%; border:1px solid #d9d9d9; border-radius:6px; padding:0 11px; height:40px; display:flex; align-items:center; background:#fff;">
+                            <span class="ant-input-prefix"><i class="fas fa-lock" style="color:#8c8c8c;"></i></span>
+                            <input class="ant-input" type="password" id="clave" name="clave" required placeholder="Tu contraseña" style="border:none; box-shadow:none; height:38px; flex:1;"/>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="ant-form-item">
+                    <button type="submit" class="ant-btn ant-btn-primary" style="width:100%; height:40px;">
+                        <i class="fas fa-sign-in-alt" style="margin-right:6px;"></i>
+                        Iniciar Sesión
+                    </button>
+                </div>
+            </form>
+
+            <div style="text-align:center; margin-top: 8px;">
+                <span style="color: rgba(0,0,0,0.45);">¿No tienes cuenta?</span>
+                <a href="{{ route('auth.registro') }}" class="ant-btn ant-btn-link" style="padding:0 8px;">Regístrate aquí</a>
             </div>
-        @endif
-
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="correo">
-                    <i class="fas fa-envelope"></i> Correo Electrónico
-                </label>
-                <input type="email" id="correo" name="correo" required placeholder="tu@email.com">
             </div>
-
-            <div class="form-group">
-                <label for="clave">
-                    <i class="fas fa-lock"></i> Contraseña
-                </label>
-                <input type="password" id="clave" name="clave" required placeholder="Tu contraseña">
-            </div>
-
-            <button type="submit" class="btn">
-                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
-            </button>
-        </form>
-
-        <div class="links">
-            <p>¿No tienes cuenta? <a href="{{ route('auth.registro') }}">Regístrate aquí</a></p>
         </div>
     </div>
+</section>
 
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const data = {
-                correo: formData.get('correo'),
-                clave: formData.get('clave')
-            };
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
 
-            try {
-                const response = await fetch('/api/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
+    const formData = new FormData(this);
+    const data = {
+        correo: formData.get('correo'),
+        clave: formData.get('clave')
+    };
 
-                const result = await response.json();
-
-                if (result.success) {
-                    // Guardar token en localStorage
-                    localStorage.setItem('jwt_token', result.token);
-                    localStorage.setItem('user_info', JSON.stringify(result.user));
-                    
-                    // Redirigir a proyectos
-                    window.location.href = '/proyectos';
-                } else {
-                    alert('Error: ' + result.message);
-                }
-            } catch (error) {
-                alert('Error de conexión: ' + error.message);
-            }
+    try {
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(data)
         });
-    </script>
-</body>
-</html>
+
+        const result = await response.json();
+
+        if (result.success) {
+            localStorage.setItem('jwt_token', result.token);
+            localStorage.setItem('user_info', JSON.stringify(result.user));
+            const expires = new Date(Date.now() + 24*60*60*1000).toUTCString();
+            document.cookie = `jwt_token=${result.token}; path=/; expires=${expires}; SameSite=Lax`;
+            window.location.href = '/proyectos';
+        } else {
+            alert('Error: ' + (result.message || 'No fue posible iniciar sesión'));
+        }
+    } catch (error) {
+        alert('Error de conexión: ' + error.message);
+    }
+});
+</script>
+@endsection

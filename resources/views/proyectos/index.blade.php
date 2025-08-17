@@ -3,12 +3,22 @@
 @section('title', 'Lista de Proyectos')
 
 @section('content')
+@php $hasJwt = request()->cookie('jwt_token') ?? ($_COOKIE['jwt_token'] ?? null); @endphp
 <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 24px; margin-bottom: 24px;">
     <div>
         @include('components.uf-display', ['showRefresh' => true])
     </div>
     <div class="ant-card">
         <div class="ant-card-body" style="text-align: center;">
+            @if(!$hasJwt)
+                <div class="ant-alert ant-alert-warning" role="alert" style="margin-bottom: 16px; text-align:left;">
+                    <span class="ant-alert-icon"><i class="fas fa-exclamation-circle"></i></span>
+                    <div class="ant-alert-content">
+                        <div class="ant-alert-message">Estás viendo en modo lectura</div>
+                        <div class="ant-alert-description">Inicia sesión para crear, editar o eliminar proyectos.</div>
+                    </div>
+                </div>
+            @endif
             <h5 style="margin-bottom: 16px; color: rgba(0, 0, 0, 0.85);">
                 <i class="fas fa-chart-bar" style="margin-right: 8px;"></i>
                 Resumen de Proyectos
@@ -57,21 +67,7 @@
                 </div>
             </div>
             <div class="ant-card-body">
-                <!-- Mensaje informativo sobre datos de ejemplo -->
-                <div style="background: linear-gradient(135deg, #e6f7ff 0%, #bae7ff 100%); border: 1px solid #91d5ff; border-radius: 12px; padding: 16px; margin-bottom: 24px; animation: slideInLeft 0.5s ease;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <i class="fas fa-info-circle" style="color: #1890ff; font-size: 20px; animation: pulse 2s infinite;"></i>
-                        <div>
-                            <h4 style="margin: 0 0 4px 0; color: #1890ff; font-weight: 600; font-size: 16px;">
-                                Datos de Ejemplo
-                            </h4>
-                            <p style="margin: 0; color: rgba(0, 0, 0, 0.65); font-size: 14px; line-height: 1.5;">
-                                Los proyectos mostrados a continuación son datos de ejemplo para demostrar la funcionalidad del sistema. 
-                                Puedes crear, editar y eliminar proyectos según tus necesidades.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+
                 
                 @if($proyectos->count() > 0)
                     <div class="ant-table-wrapper" style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
@@ -125,25 +121,27 @@
                                                                style="padding: 8px 12px; min-width: auto; border-radius: 8px; transition: all 0.3s ease;">
                                                                 <i class="fas fa-eye"></i>
                                                             </a>
-                                                            <a href="{{ route('proyectos.edit', $proyecto->id) }}" 
-                                                               class="ant-btn ant-btn-text" 
-                                                               title="Editar"
-                                                               style="padding: 8px 12px; min-width: auto; border-radius: 8px; transition: all 0.3s ease;">
-                                                                <i class="fas fa-edit"></i>
-                                                            </a>
-                                                            <form action="{{ route('proyectos.destroy', $proyecto->id) }}" 
-                                                                  method="POST" 
-                                                                  style="display: inline;"
-                                                                  onsubmit="return confirm('¿Estás seguro de que quieres eliminar este proyecto?')">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" 
-                                                                        class="ant-btn ant-btn-text ant-btn-dangerous" 
-                                                                        title="Eliminar"
-                                                                        style="padding: 8px 12px; min-width: auto; border-radius: 8px; transition: all 0.3s ease;">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </button>
-                                                            </form>
+                                                            @if($hasJwt)
+                                                                <a href="{{ route('proyectos.edit', $proyecto->id) }}" 
+                                                                   class="ant-btn ant-btn-text" 
+                                                                   title="Editar"
+                                                                   style="padding: 8px 12px; min-width: auto; border-radius: 8px; transition: all 0.3s ease;">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <form action="{{ route('proyectos.destroy', $proyecto->id) }}" 
+                                                                      method="POST" 
+                                                                      style="display: inline;"
+                                                                      onsubmit="return confirm('¿Estás seguro de que quieres eliminar este proyecto?')">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" 
+                                                                            class="ant-btn ant-btn-text ant-btn-dangerous" 
+                                                                            title="Eliminar"
+                                                                            style="padding: 8px 12px; min-width: auto; border-radius: 8px; transition: all 0.3s ease;">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </form>
+                                                            @endif
                                                         </div>
                                                     </td>
                                                 </tr>

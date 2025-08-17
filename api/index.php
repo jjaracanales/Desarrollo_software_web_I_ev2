@@ -101,9 +101,6 @@ try {
             // Run ALL migrations (including cache, jobs, etc.)
             \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true]);
             
-            // Run seeders
-            \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'ProyectoSeeder', '--force' => true]);
-            
             // Verify tables exist
             $pdo = new PDO('sqlite:/tmp/database.sqlite');
             $tables = ['proyectos', 'cache', 'jobs', 'users'];
@@ -124,63 +121,6 @@ try {
             
         } catch (Exception $e) {
             error_log('Database initialization error: ' . $e->getMessage());
-            
-            // Force create tables if needed
-            try {
-                $pdo = new PDO('sqlite:/tmp/database.sqlite');
-                
-                // Create proyectos table
-                $createProyectos = "
-                CREATE TABLE IF NOT EXISTS proyectos (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    nombre VARCHAR(255) NOT NULL,
-                    fecha_inicio DATE NOT NULL,
-                    estado VARCHAR(50) NOT NULL,
-                    responsable VARCHAR(255) NOT NULL,
-                    monto DECIMAL(15,2) NOT NULL,
-                    created_at TIMESTAMP,
-                    updated_at TIMESTAMP
-                )";
-                $pdo->exec($createProyectos);
-                
-                // Create cache table
-                $createCache = "
-                CREATE TABLE IF NOT EXISTS cache (
-                    key VARCHAR(255) PRIMARY KEY,
-                    value TEXT NOT NULL,
-                    expiration INTEGER NOT NULL
-                )";
-                $pdo->exec($createCache);
-                
-                // Create users table
-                $createUsers = "
-                CREATE TABLE IF NOT EXISTS users (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    name VARCHAR(255) NOT NULL,
-                    email VARCHAR(255) UNIQUE NOT NULL,
-                    email_verified_at TIMESTAMP NULL,
-                    password VARCHAR(255) NOT NULL,
-                    remember_token VARCHAR(100) NULL,
-                    created_at TIMESTAMP,
-                    updated_at TIMESTAMP
-                )";
-                $pdo->exec($createUsers);
-                
-                // Insert sample data
-                $insertData = "
-                INSERT OR IGNORE INTO proyectos (nombre, fecha_inicio, estado, responsable, monto, created_at, updated_at) VALUES 
-                ('Sistema de Gestión de Inventarios', '2025-01-15', 'En Progreso', 'Carlos Rodríguez', 15000000, datetime('now'), datetime('now')),
-                ('Plataforma E-commerce', '2025-02-01', 'Pendiente', 'Ana García', 25000000, datetime('now'), datetime('now')),
-                ('Aplicación Móvil de Delivery', '2025-01-20', 'En Progreso', 'Miguel Torres', 18000000, datetime('now'), datetime('now')),
-                ('Sistema de Facturación', '2025-02-10', 'Completado', 'Laura Sánchez', 12000000, datetime('now'), datetime('now')),
-                ('Portal Web Corporativo', '2025-01-25', 'Pendiente', 'Roberto Flores', 8000000, datetime('now'), datetime('now'))
-                ";
-                $pdo->exec($insertData);
-                
-                file_put_contents('/tmp/db_ready', 'manual');
-            } catch (Exception $e2) {
-                error_log('Manual database creation error: ' . $e2->getMessage());
-            }
         }
     }
 

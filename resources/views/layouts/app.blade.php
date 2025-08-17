@@ -371,6 +371,23 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
+        /* Ensure readable text inside white cards/inputs even if parent has color:white (e.g., hero sections) */
+        .ant-card .ant-card-body { color: rgba(0, 0, 0, 0.88); }
+        .ant-form-item-label > label { color: rgba(0, 0, 0, 0.88); }
+        .ant-input,
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        input[type="search"] {
+            color: rgba(0, 0, 0, 0.88) !important;
+            background-color: #fff;
+        }
+        .ant-input::placeholder,
+        input::placeholder {
+            color: rgba(0, 0, 0, 0.35) !important;
+        }
     </style>
 </head>
 <body>
@@ -378,22 +395,21 @@
         <header class="ant-layout-header">
             <div style="display: flex; justify-content: space-between; align-items: center; height: 100%; padding: 0 32px;">
                 <div class="logo-container">
-                    <a href="{{ route('proyectos.index') }}" style="color: white; text-decoration: none; display: flex; align-items: center;">
-                        <span style="font-size: 24px; font-weight: 700; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-                            <i class="fas fa-project-diagram" style="margin-right: 8px; color: #1890ff;"></i>
-                            Proyectos Tech Solutions
-                        </span>
+                    <a href="{{ route('home') }}" style="color: white; text-decoration: none; display: flex; align-items: center;">
+                        <img src="{{ asset('logo.png') }}" alt="Logo Tech Solutions" style="height:48px; width:auto; margin-right:12px; display:block;" />
                     </a>
                 </div>
                 <div style="display: flex; gap: 20px;">
-                    <a href="{{ route('proyectos.index') }}" class="ant-btn ant-btn-ghost" style="color: white; border-color: rgba(255, 255, 255, 0.3); height: 40px; padding: 0 20px;">
-                        <i class="fas fa-list" style="margin-right: 6px;"></i>
-                        Proyectos
-                    </a>
-                    <a href="{{ route('proyectos.create') }}" class="ant-btn ant-btn-primary" style="background: #1890ff; border-color: #1890ff; height: 40px; padding: 0 20px;">
-                        <i class="fas fa-plus" style="margin-right: 6px;"></i>
-                        Nuevo Proyecto
-                    </a>
+                    
+                    @php
+                        $hasJwt = request()->cookie('jwt_token');
+                    @endphp
+                    @if($hasJwt)
+                        <a href="{{ route('proyectos.create') }}" class="ant-btn ant-btn-primary" style="background: #1890ff; border-color: #1890ff; height: 40px; padding: 0 20px;">
+                            <i class="fas fa-plus" style="margin-right: 6px;"></i>
+                            Nuevo Proyecto
+                        </a>
+                    @endif
                 </div>
             </div>
         </header>

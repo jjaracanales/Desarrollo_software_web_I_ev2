@@ -152,25 +152,28 @@
                         Volver a Proyectos
                     </a>
                     <div style="display: flex; gap: 12px;">
-                        <a href="{{ route('proyectos.edit', $proyecto->id) }}" 
-                           class="ant-btn ant-btn-primary"
-                           style="background: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 600; text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(255, 154, 86, 0.3);">
-                            <i class="fas fa-edit"></i>
-                            Editar Proyecto
-                        </a>
-                        <form action="{{ route('proyectos.destroy', $proyecto->id) }}" 
-                              method="POST" 
-                              style="display: inline;"
-                              onsubmit="return confirm('¿Estás seguro de que quieres eliminar este proyecto?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" 
-                                    class="ant-btn ant-btn-dangerous"
-                                    style="background: linear-gradient(135deg, #ff4d4f 0%, #cf1322 100%); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 600; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(255, 77, 79, 0.3);">
-                                <i class="fas fa-trash"></i>
-                                Eliminar
-                            </button>
-                        </form>
+                        @php $hasJwt = request()->cookie('jwt_token'); @endphp
+                        @if($hasJwt)
+                            <a href="{{ route('proyectos.edit', $proyecto->id) }}" 
+                               class="ant-btn ant-btn-primary"
+                               style="background: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 600; text-decoration: none; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(255, 154, 86, 0.3);">
+                                <i class="fas fa-edit"></i>
+                                Editar Proyecto
+                            </a>
+                            <form action="{{ route('proyectos.destroy', $proyecto->id) }}" 
+                                  method="POST" 
+                                  style="display: inline;"
+                                  onsubmit="return confirm('¿Estás seguro de que quieres eliminar este proyecto?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" 
+                                        class="ant-btn ant-btn-dangerous"
+                                        style="background: linear-gradient(135deg, #ff4d4f 0%, #cf1322 100%); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 600; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(255, 77, 79, 0.3);">
+                                    <i class="fas fa-trash"></i>
+                                    Eliminar
+                                </button>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>

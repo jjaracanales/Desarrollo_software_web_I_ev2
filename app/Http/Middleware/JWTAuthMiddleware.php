@@ -17,22 +17,37 @@ class JWTAuthMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        // Intentar obtener el token desde Authorization: Bearer o desde cookie 'jwt_token'
         $token = $request->bearerToken();
+        if (!$token) {
+            // Primero intenta desde la bolsa de cookies de Laravel
+            $token = $request->cookie('jwt_token');
+        }
+        if (!$token && isset($_COOKIE['jwt_token'])) {
+            // Fallback: si EncryptCookies eliminó la cookie no cifrada, léela directo del superglobal
+            $token = $_COOKIE['jwt_token'];
+        }
 
         if (!$token) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Token de autenticación requerido'
-            ], 401);
+            if ($request->expectsJson() || str_starts_with($request->path(), 'api')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Token de autenticación requerido'
+                ], 401);
+            }
+            return redirect()->route('auth.login')->with('error', 'Debes iniciar sesión.');
         }
 
         $payload = AuthController::verificarJWT($token);
         
         if (!$payload) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Token inválido o expirado'
-            ], 401);
+            if ($request->expectsJson() || str_starts_with($request->path(), 'api')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Token inválido o expirado'
+                ], 401);
+            }
+            return redirect()->route('auth.login')->with('error', 'Tu sesión ha expirado.');
         }
 
         // Agregar información del usuario a la request

@@ -12,11 +12,13 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Solo usuario administrador
-        User::create([
-            'nombre' => 'Administrador del Sistema',
-            'correo' => 'admin@sistema.com',
-            'clave' => 'admin123'
-        ]);
+        // Crear o reutilizar usuario administrador (idempotente)
+        User::firstOrCreate(
+            ['correo' => 'admin@sistema.com'],
+            [
+                'nombre' => 'Administrador del Sistema',
+                'clave' => 'admin123', // se hashea en el mutator del modelo
+            ]
+        );
     }
 }

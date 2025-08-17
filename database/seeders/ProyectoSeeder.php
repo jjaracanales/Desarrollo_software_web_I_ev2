@@ -36,7 +36,7 @@ class ProyectoSeeder extends Seeder
                 'estado' => 'Pendiente',
                 'responsable' => 'José Jara Canales',
                 'monto' => 3200000,
-                'created_by' => 2
+                'created_by' => 1
             ],
             [
                 'nombre' => 'Desarrollo de Aplicación Móvil',
@@ -44,7 +44,7 @@ class ProyectoSeeder extends Seeder
                 'estado' => 'En Progreso',
                 'responsable' => 'Equipo Móvil',
                 'monto' => 4500000,
-                'created_by' => 2
+                'created_by' => 1
             ],
             [
                 'nombre' => 'Auditoría de Seguridad IT',
@@ -52,7 +52,7 @@ class ProyectoSeeder extends Seeder
                 'estado' => 'Cancelado',
                 'responsable' => 'Departamento de Seguridad',
                 'monto' => 1200000,
-                'created_by' => 3
+                'created_by' => 1
             ]
         ];
 

@@ -162,7 +162,6 @@
         @endif
 
         <form id="registroForm">
-            @csrf
             <div class="form-group">
                 <label for="nombre">
                     <i class="fas fa-user"></i> Nombre Completo
@@ -218,8 +217,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify(data)
                 });
